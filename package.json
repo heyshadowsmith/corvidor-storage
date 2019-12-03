@@ -1,0 +1,26 @@
+{
+  "name": "corvidor",
+  "version": "1.0.0",
+  "description": "Corvidor is a secure, stateful NoSQL data store solution.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heyshadowsmith/corvidor.git"
+  },
+  "author": "Shadow Smith",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heyshadowsmith/corvidor/issues"
+  },
+  "homepage": "https://github.com/heyshadowsmith/corvidor#readme",
+  "dependencies": {
+    "lzma": "^2.3.2",
+    "shortid": "^2.2.15"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.1"
+  }
+}
