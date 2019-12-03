@@ -56,6 +56,15 @@ function deleteFile(name) {
     });
 }
 
+function findArrayCenter(array) {
+    return Math.floor(array.length / 2);
+}
+
+function combineArray(array1, position, array2) {
+    array1.splice(position, 0, ...array2);
+    return array1;
+}
+
 module.exports = {
     compressData,
     decompressData,
@@ -68,5 +77,7 @@ module.exports = {
     createFileName,
     createFile,
     readFile,
-    deleteFile
+    deleteFile,
+    findArrayCenter,
+    combineArray
 };
