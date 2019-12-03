@@ -5,8 +5,16 @@ function writeCorvidorFile(data) {
     atom.createFile(atom.createFileName(), molecule.convertData(data));
 }
 
+function writeSecureCorvidorFile(data, secret) {
+    atom.createFile(atom.createFileName(), molecule.convertSecureData(data, secret));
+}
+
 function readCorvidorFile(name) {
     return molecule.revertData(atom.readFile(name));
+}
+
+function readSecureCorvidorFile(name, secret) {
+    return molecule.revertSecureData(atom.readFile(name));
 }
 
 function updateCorvidorFile(name, data) {
@@ -15,6 +23,8 @@ function updateCorvidorFile(name, data) {
 
 module.exports = {
     writeCorvidorFile,
+    writeSecureCorvidorFile,
     readCorvidorFile,
+    readSecureCorvidorFile,
     updateCorvidorFile
 };
