@@ -56,13 +56,14 @@ function deleteFile(name) {
     });
 }
 
-function findArrayCenter(array) {
-    return Math.floor(array.length / 2);
+function combineArray(array1, array2) {
+    array1.splice(2, 0, ...array2);
+    return array1;
 }
 
-function combineArray(array1, position, array2) {
-    array1.splice(position, 0, ...array2);
-    return array1;
+function splitArray(array1, array2) {
+    array.slice(2, array2.length);
+    return array;
 }
 
 module.exports = {
@@ -78,6 +79,6 @@ module.exports = {
     createFile,
     readFile,
     deleteFile,
-    findArrayCenter,
-    combineArray
+    combineArray,
+    splitArray
 };
