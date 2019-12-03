@@ -42,6 +42,7 @@ function splitBlendedCompressedData(data, secret) {
     findArrayInArray(data, compressedEncryptedData);
 }
 
+// I need to figure out how to strip array2 from array1
 function findArrayInArray(array1, array2) {
     console.log(array1);
     console.log(array2);
