@@ -39,13 +39,8 @@ function createFileName() {
     return shortid.generate();
 }
 
-function createFile(name, content) {
-    fs.writeFile(`data/${name}.crvdr`, content, error => {
-        if (error) {
-            console.error(error);
-            return;
-        }
-    });
+function createFile(name, data) {
+    fs.writeFileSync(`data/${name}.crvdr`, data);
 }
 
 function readFile(name) {
