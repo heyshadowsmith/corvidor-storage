@@ -1,6 +1,7 @@
 const fs = require("fs");
 const lzma = require("lzma");
 const shortid = require("shortid");
+const bcrypt = require("bcryptjs");
 
 function compressData(data) {
     return lzma.compress(JSON.stringify(data));
@@ -24,6 +25,14 @@ function encodeData(data) {
 
 function decodeData(data) {
     return Buffer.from(data, "base64");
+}
+
+function encryptData(data) {
+    return bcrypt.hashSync(data, 10);
+}
+
+function compareEncryptedData(data, encryptedData) {
+    return bcrypt.compareSync(data, encryptedData);
 }
 
 function createFileName() {
@@ -59,6 +68,8 @@ module.exports = {
     debufferData,
     encodeData,
     decodeData,
+    encryptData,
+    compareEncryptedData,
     createFileName,
     createFile,
     readFile,
