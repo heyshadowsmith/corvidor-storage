@@ -4,9 +4,10 @@ const shortid = require("shortid");
 const bcrypt = require("bcryptjs");
 
 function compressData(data) {
-    return lzma.compress(JSON.stringify(data));
+    return lzma.compress(data);
 }
 
+// This function is causing the readSecureCorvidorFile function to fail 75% of the time
 function decompressData(data) {
     return lzma.decompress(data);
 }
@@ -56,14 +57,20 @@ function deleteFile(name) {
     });
 }
 
-function combineArray(array1, array2) {
-    array1.splice(2, 0, ...array2);
-    return array1;
+function combineArrays(array1, array2) {
+    const firstArrayPart = array1.slice(0, 13);
+    const secondArrayPart = array2;
+    const lastArrayPart = array1.slice(13);
+    const ArrayStructure = [firstArrayPart, secondArrayPart, lastArrayPart];
+    const newArray = [].concat.apply([], ArrayStructure);
+    return newArray;
 }
 
-function splitArray(array1, array2) {
-    array.slice(2, array2.length);
-    return array;
+function getOriginalArray(array1, array2) {
+    const firstArrayPart = array1.slice(0, 13);
+    const lastArrayPart = array1.slice(array2.length + 13);
+    const originalArray = firstArrayPart.concat(lastArrayPart);
+    return originalArray;
 }
 
 module.exports = {
@@ -79,6 +86,6 @@ module.exports = {
     createFile,
     readFile,
     deleteFile,
-    combineArray,
-    splitArray
+    combineArrays,
+    getOriginalArray
 };
