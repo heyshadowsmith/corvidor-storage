@@ -14,7 +14,7 @@ function readCorvidorFile(name) {
 }
 
 function readSecureCorvidorFile(name, secret) {
-    return molecule.revertSecureData(atom.readFile(name));
+    return molecule.revertSecureData(atom.readFile(name), secret);
 }
 
 function updateCorvidorFile(name, data) {
