@@ -21,10 +21,15 @@ function updateCorvidorFile(name, data) {
     atom.createFile(name, molecule.convertData(data));
 }
 
+function updateSecureCorvidorFile(name, data, secret) {
+    atom.createFile(name, molecule.convertSecureData(data, secret));
+}
+
 module.exports = {
     writeCorvidorFile,
     writeSecureCorvidorFile,
     readCorvidorFile,
     readSecureCorvidorFile,
-    updateCorvidorFile
+    updateCorvidorFile,
+    updateSecureCorvidorFile
 };
