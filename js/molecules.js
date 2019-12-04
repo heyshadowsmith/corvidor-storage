@@ -9,12 +9,12 @@ function convertData(data) {
 
 function convertSecureData(data, secret) {
     const compressedData = atom.compressData(data);
-    const encryptedData = atom.encryptData(secret);
-    const compressedEncryptedData = atom.compressData(encryptedData);
-    const blendedCompressedData = blendCompressedData(compressedData, compressedEncryptedData);
+    const encryptedSecret = atom.encryptData(secret);
+    const compressedEncryptedSecret = atom.compressData(encryptedSecret);
+    const blendedCompressedData = atom.combineArrays(compressedData, compressedEncryptedSecret);
     const bufferedData = atom.bufferData(blendedCompressedData);
     const encodedData = atom.encodeData(bufferedData);
-    return encodedData; 
+    return encodedData;
 }
 
 function revertData(data) {
@@ -24,35 +24,21 @@ function revertData(data) {
     return decompressedData;
 }
 
+// Something in this function is buggin' out
 function revertSecureData(data, secret) {
-    const decodeData = atom.decodeData(data);
-    const debufferedData = atom.debufferData(decodeData);
-    return splitBlendedCompressedData(debufferedData, secret);
-}
-
-function blendCompressedData(data1, data2) {
-    const arrayCenter = atom.findArrayCenter(data1);
-    const newArray = atom.combineArray(data1, arrayCenter, data2);
-    return newArray;
-}
-
-function splitBlendedCompressedData(data, secret) {
-    const encryptedData = atom.encryptData(secret);
-    const compressedEncryptedData = atom.compressData(encryptedData);
-    findArrayInArray(data, compressedEncryptedData);
-}
-
-// I need to figure out how to strip array2 from array1
-function findArrayInArray(array1, array2) {
-    console.log(array1);
-    console.log(array2);
+    const decodedData = atom.decodeData(data);
+    const debufferedData = atom.debufferData(decodedData);
+    const encryptedSecret = atom.encryptData(secret);
+    const compressedEncryptedSecret = atom.compressData(encryptedSecret)
+    const originalArray = atom.getOriginalArray(debufferedData, compressedEncryptedSecret)
+    const decompressedData = atom.decompressData(originalArray);
+    return decompressedData;
+    // return decompressedData;
 }
 
 module.exports = {
     convertData,
     convertSecureData,
     revertData,
-    revertSecureData,
-    blendCompressedData,
-    splitBlendedCompressedData
+    revertSecureData
 };
