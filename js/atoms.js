@@ -4,12 +4,11 @@ const shortid = require("shortid");
 const bcrypt = require("bcryptjs");
 
 function compressData(data) {
-    return lzma.compress(data);
+    return lzma.compress(JSON.stringify(data));
 }
 
-// This function is causing the readSecureCorvidorFile function to fail 75% of the time
 function decompressData(data) {
-    return lzma.decompress(data);
+    return JSON.parse(lzma.decompress(data));
 }
 
 function bufferData(data) {
