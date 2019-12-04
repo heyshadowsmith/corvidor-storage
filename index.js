@@ -6,4 +6,9 @@ const organism = require("./js/organisms");
 //   "name": "shadow",
 //   "age": "27"
 // }, "Smith");
-console.log(organism.readSecureCorvidorFile("u_Q0e52H", "Smith"))
+
+// organism.updateSecureCorvidorFile("IAwja6M7", {
+//   "name": "shadow",
+//   "age": "28"
+// }, "Smith");
+console.log(organism.readSecureCorvidorFile("IAwja6M7", "Smith"))
