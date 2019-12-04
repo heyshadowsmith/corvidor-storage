@@ -9,9 +9,8 @@ function convertData(data) {
 
 function convertSecureData(data, secret) {
     const compressedData = atom.compressData(data);
-    const encryptedSecret = atom.encryptData(secret);
-    const compressedEncryptedSecret = atom.compressData(encryptedSecret);
-    const blendedCompressedData = atom.combineArrays(compressedData, compressedEncryptedSecret);
+    const compressedSecret = atom.compressData(secret);
+    const blendedCompressedData = atom.combineArrays(compressedData, compressedSecret);
     const bufferedData = atom.bufferData(blendedCompressedData);
     const encodedData = atom.encodeData(bufferedData);
     return encodedData;
@@ -24,16 +23,13 @@ function revertData(data) {
     return decompressedData;
 }
 
-// Something in this function is buggin' out
 function revertSecureData(data, secret) {
     const decodedData = atom.decodeData(data);
     const debufferedData = atom.debufferData(decodedData);
-    const encryptedSecret = atom.encryptData(secret);
-    const compressedEncryptedSecret = atom.compressData(encryptedSecret)
-    const originalArray = atom.getOriginalArray(debufferedData, compressedEncryptedSecret)
+    const compressedSecret = atom.compressData(secret)
+    const originalArray = atom.getOriginalArray(debufferedData, compressedSecret)
     const decompressedData = atom.decompressData(originalArray);
     return decompressedData;
-    // return decompressedData;
 }
 
 module.exports = {
