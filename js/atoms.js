@@ -59,6 +59,7 @@ function deleteFile(name) {
 function combineArrays(array1, array2) {
     const firstArrayPart = array1.slice(0, 13);
     const secondArrayPart = array2;
+    secondArrayPart[0] = 0;
     const lastArrayPart = array1.slice(13);
     const ArrayStructure = [firstArrayPart, secondArrayPart, lastArrayPart];
     const newArray = [].concat.apply([], ArrayStructure);
@@ -67,6 +68,8 @@ function combineArrays(array1, array2) {
 
 function getOriginalArray(array1, array2) {
     const firstArrayPart = array1.slice(0, 13);
+    const secondArrayPart = array1.slice(13, array2.length);
+    secondArrayPart[0] = 93;
     const lastArrayPart = array1.slice(array2.length + 13);
     const originalArray = firstArrayPart.concat(lastArrayPart);
     return originalArray;
