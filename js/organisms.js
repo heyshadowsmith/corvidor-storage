@@ -6,7 +6,10 @@ function writeCorvidorFile(data, secret) {
 
     atom.createFile(name, molecule.convertData(data, secret));
 
-    return `${name} has been created`
+    return {
+        id: name,
+        secret
+    }
 }
 
 function readCorvidorFile(name, secret) {
@@ -24,7 +27,7 @@ function updateCorvidorFile(name, data, secret) {
 
     atom.createFile(name, molecule.convertData(data, secret));
 
-    return `${name} has been updated`;
+    return "Data has been updated";
 }
 
 function deleteCorvidorFile(name, secret) {
@@ -34,7 +37,7 @@ function deleteCorvidorFile(name, secret) {
 
     atom.deleteFile(name);
 
-    return `${name} has been deleted`;
+    return "Data has been deleted";
 }
 
 module.exports = {
