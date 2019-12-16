@@ -1,35 +1,45 @@
 const atom = require("./atoms");
 const molecule = require("./molecules");
 
-function writeCorvidorFile(data) {
-    atom.createFile(atom.createFileName(), molecule.convertData(data));
-}
-
 function writeSecureCorvidorFile(data, secret) {
-    atom.createFile(atom.createFileName(), molecule.convertSecureData(data, secret));
-}
+    const name = atom.createFileName();
 
-function readCorvidorFile(name) {
-    return molecule.revertData(atom.readFile(name));
+    atom.createFile(name, molecule.convertSecureData(data, secret));
+
+    return `${name} has been created`
 }
 
 function readSecureCorvidorFile(name, secret) {
+    const secretsMatch = molecule.secretsMatch(atom.readFile(name), secret);
+
+    if (!secretsMatch) return "Permission denied";
+    
     return molecule.revertSecureData(atom.readFile(name), secret);
 }
 
-function updateCorvidorFile(name, data) {
-    atom.createFile(name, molecule.convertData(data));
+function updateSecureCorvidorFile(name, data, secret) {
+    const secretsMatch = molecule.secretsMatch(atom.readFile(name), secret);
+
+    if (!secretsMatch) return "Permission denied";
+
+    atom.createFile(name, molecule.convertSecureData(data, secret));
+
+    return `${name} has been updated`;
 }
 
-function updateSecureCorvidorFile(name, data, secret) {
-    atom.createFile(name, molecule.convertSecureData(data, secret));
+function deleteSecureCorvidorFile(name, secret) {
+    const secretsMatch = molecule.secretsMatch(atom.readFile(name), secret);
+
+    if (!secretsMatch) return "Permission denied";
+
+    atom.deleteFile(name);
+
+    return `${name} has been deleted`;
 }
 
 module.exports = {
-    writeCorvidorFile,
     writeSecureCorvidorFile,
-    readCorvidorFile,
     readSecureCorvidorFile,
-    updateCorvidorFile,
-    updateSecureCorvidorFile
+    updateSecureCorvidorFile,
+    deleteSecureCorvidorFile
 };
