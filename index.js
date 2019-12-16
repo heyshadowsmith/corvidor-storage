@@ -11,4 +11,5 @@ const organism = require("./js/organisms");
 // UPDATE
 // console.log(JSON.stringify(organism.updateSecureCorvidorFile(name, data, secret), undefined, 4));
 
+// DESTROY
 // console.log(JSON.stringify(organism.deleteSecureCorvidorFile(name, secret), undefined, 4));
