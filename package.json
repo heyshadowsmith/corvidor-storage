@@ -20,7 +20,8 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "lzma": "^2.3.2",
-    "shortid": "^2.2.15"
+    "shortid": "^2.2.15",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.1"

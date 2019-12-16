@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const uuid = require("uuid/v4");
 const organism = require("./js/organisms");
 
 app.use(
@@ -17,7 +18,7 @@ app.use(
 // CREATE
 app.post("/", (req, res) => {
   const data = req.body.data;
-  const secret = req.body.secret;
+  const secret = uuid();
 
   res.send(organism.writeCorvidorFile(data, secret));
 })
