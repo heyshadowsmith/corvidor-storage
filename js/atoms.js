@@ -48,10 +48,9 @@ function readFile(name) {
 }
 
 function deleteFile(name) {
-    fs.unlink(`data/${name}.txt`, error => {
+    fs.unlink(`data/${name}.crvdr`, error => {
         if (error) {
-            console.error(error);
-            return;
+            return `${name} is not in Corvidor`;
         }
     });
 }
@@ -66,13 +65,14 @@ function combineArrays(array1, array2) {
     return newArray;
 }
 
-function getOriginalArray(array1, array2) {
+function getOriginalArrays(array1, array2) {
     const firstArrayPart = array1.slice(0, 13);
-    const secondArrayPart = array1.slice(13, array2.length);
+    const secondArrayPart = array1.slice(13, 13 + array2.length);
     secondArrayPart[0] = 93;
     const lastArrayPart = array1.slice(array2.length + 13);
     const originalArray = firstArrayPart.concat(lastArrayPart);
-    return originalArray;
+    const originalArrays = [originalArray, secondArrayPart];
+    return originalArrays;
 }
 
 module.exports = {
@@ -89,5 +89,5 @@ module.exports = {
     readFile,
     deleteFile,
     combineArrays,
-    getOriginalArray
+    getOriginalArrays
 };
