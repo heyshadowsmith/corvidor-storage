@@ -1,6 +1,6 @@
 const atom = require("./atoms");
 
-function convertSecureData(data, secret) {
+function convertData(data, secret) {
     const compressedData = atom.compressData(data);
     const compressedSecret = atom.compressData(secret);
     const blendedCompressedData = atom.combineArrays(compressedData, compressedSecret);
@@ -9,7 +9,7 @@ function convertSecureData(data, secret) {
     return encodedData;
 }
 
-function revertSecureData(data, secret) {
+function revertData(data, secret) {
     const decodedData = atom.decodeData(data);
     const debufferedData = atom.debufferData(decodedData);
     const compressedSecret = atom.compressData(secret)
@@ -31,7 +31,7 @@ function secretsMatch(data, secret) {
 }
 
 module.exports = {
-    convertSecureData,
-    revertSecureData,
+    convertData,
+    revertData,
     secretsMatch
 };
