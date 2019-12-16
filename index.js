@@ -1,13 +1,52 @@
+const express = require("express");
+const app = express();
 const organism = require("./js/organisms");
 
+app.use(
+  express.json({
+    limit: "50mb"
+  })
+);
+
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+);
+
 // CREATE
-// console.log(JSON.stringify(organism.writeCorvidorFile(data, secret), undefined, 4));
+app.post("/", (req, res) => {
+  const data = req.body.data;
+  const secret = req.body.secret;
+
+  res.send(organism.writeCorvidorFile(data, secret));
+})
 
 // READ
-// console.log(JSON.stringify(organism.readCorvidorFile(name, secret), undefined, 4));
+app.get("/", (req, res) => {
+  const name = req.body.id;
+  const secret = req.body.secret;
+
+  res.send(organism.readCorvidorFile(name, secret));
+})
 
 // UPDATE
-// console.log(JSON.stringify(organism.updateCorvidorFile(name, data, secret), undefined, 4));
+app.put("/", (req, res) => {
+  const name = req.body.id;
+  const data = req.body.data;
+  const secret = req.body.secret;
+
+  res.send(organism.updateCorvidorFile(name, data, secret));
+})
 
 // DESTROY
-// console.log(JSON.stringify(organism.deleteCorvidorFile(name, secret), undefined, 4));
+app.delete("/", (req, res) => {
+  const name = req.body.id;
+  const secret = req.body.secret;
+
+  res.send(organism.deleteCorvidorFile(name, secret));
+})
+
+const PORT = process.env.PORT || 7000;
+
+app.listen(PORT, () => console.log(`Running on port ${PORT}.`));
