@@ -2,13 +2,13 @@ const atom = require("./js/atoms");
 const molecule = require("./js/molecules");
 const organism = require("./js/organisms");
 
-// organism.writeSecureCorvidorFile({
-//   "name": "shadow",
-//   "age": "27"
-// }, "Smith");
+// CREATE
+// console.log(JSON.stringify(organism.writeSecureCorvidorFile(data, secret), undefined, 4));
 
-// organism.updateSecureCorvidorFile("IAwja6M7", {
-//   "name": "shadow",
-//   "age": "28"
-// }, "Smith");
-// console.log(organism.readSecureCorvidorFile("TJD7WgI_", "Smith"))
+// READ
+// console.log(JSON.stringify(organism.readSecureCorvidorFile(name, secret), undefined, 4));
+
+// UPDATE
+// console.log(JSON.stringify(organism.updateSecureCorvidorFile(name, data, secret), undefined, 4));
+
+// console.log(JSON.stringify(organism.deleteSecureCorvidorFile(name, secret), undefined, 4));
