@@ -5,6 +5,7 @@ const shortid = require("shortid");
 
 const readFileAsync = util.promisify(fs.readFile);
 const deleteFileAsync = util.promisify(fs.unlink);
+const fileExistsAsync = util.promisify(fs.access);
 const writeFileAsync = util.promisify(fs.writeFile);
 
 function compressData(data) {
@@ -57,28 +58,35 @@ function createFileName() {
 
 async function createFile(name, data) {
     const response = await writeFileAsync(`data/${name}.crvdr`, data)
-        .then(() => `${name} has been added to Corvidor`)
-        .catch(error => {
-            throw new Error(error);
-        });
+        .then(() => `${name} has been added to Corvidor`);
     return response;
 }
 
 async function readFile(name) {
+    const fileExists = await fileExistsAsync(`data/${name}.crvdr`, fs.F_OK)
+        .then(() => true)
+        .catch(() => false);
+
+    if (!fileExists) {
+        return `${name} is not an id in Corvidor`;
+    }
+
     const fileData = await readFileAsync(`data/${name}.crvdr`, "utf8")
-        .then(data => data)
-        .catch(error => {
-            throw new Error(error);
-        });
+        .then(data => data);
     return fileData;
 }
 
 async function deleteFile(name) {
+    const fileExists = await fileExistsAsync(`data/${name}.crvdr`, fs.F_OK)
+        .then(() => true)
+        .catch(() => false);
+
+    if (!fileExists) {
+        return `${name} is not an id in Corvidor`;
+    }
+    
     const response = await deleteFileAsync(`data/${name}.crvdr`)
-        .then(() => `${name} has been deleted from Corvidor`)
-        .catch(error => {
-            throw new Error(error);
-        });
+        .then(() => `${name} has been deleted from Corvidor`);
     return response;
 }
 
