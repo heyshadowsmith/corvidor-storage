@@ -13,6 +13,14 @@ async function writeCorvidorFile(data, secret) {
 }
 
 async function readCorvidorFile(name, secret) {
+    const fileExists = await atom.fileExists(name);
+    
+    if (!fileExists) {
+        return {
+            "error": "Permission denied"
+        };
+    };
+
     const fileData = await atom.readFile(name);
     const secretsMatch = await molecule.secretsMatch(fileData, secret);
 
@@ -28,6 +36,14 @@ async function readCorvidorFile(name, secret) {
 }
 
 async function updateCorvidorFile(name, data, secret) {
+    const fileExists = await atom.fileExists(name);
+    
+    if (!fileExists) {
+        return {
+            "error": "Permission denied"
+        };
+    };
+
     const fileData = await atom.readFile(name);
     const secretsMatch = await molecule.secretsMatch(fileData, secret);
 
@@ -45,6 +61,14 @@ async function updateCorvidorFile(name, data, secret) {
 }
 
 async function deleteCorvidorFile(name, secret) {
+    const fileExists = await atom.fileExists(name);
+    
+    if (!fileExists) {
+        return {
+            "error": "Permission denied"
+        };
+    };
+    
     const fileData = await atom.readFile(name)
     const secretsMatch = await molecule.secretsMatch(fileData, secret);
 
