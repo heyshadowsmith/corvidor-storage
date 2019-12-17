@@ -8,6 +8,12 @@ const deleteFileAsync = util.promisify(fs.unlink);
 const fileExistsAsync = util.promisify(fs.access);
 const writeFileAsync = util.promisify(fs.writeFile);
 
+async function createFile(name, data) {
+    const response = await writeFileAsync(`data/${name}.crvdr`, data)
+        .then(() => `${name} has been added to Corvidor`);
+    return response;
+}
+
 function compressData(data) {
     return lzma.compress(JSON.stringify(data));
 }
@@ -56,41 +62,30 @@ function createFileName() {
     return shortid.generate();
 }
 
-async function createFile(name, data) {
-    const response = await writeFileAsync(`data/${name}.crvdr`, data)
-        .then(() => `${name} has been added to Corvidor`);
-    return response;
-}
-
-async function readFile(name) {
+async function fileExists(name) {
     const fileExists = await fileExistsAsync(`data/${name}.crvdr`, fs.F_OK)
         .then(() => true)
         .catch(() => false);
 
-    if (!fileExists) {
-        return `${name} is not an id in Corvidor`;
-    }
+    return fileExists;
+}
 
+async function readFile(name) {
     const fileData = await readFileAsync(`data/${name}.crvdr`, "utf8")
         .then(data => data);
+
     return fileData;
 }
 
 async function deleteFile(name) {
-    const fileExists = await fileExistsAsync(`data/${name}.crvdr`, fs.F_OK)
-        .then(() => true)
-        .catch(() => false);
-
-    if (!fileExists) {
-        return `${name} is not an id in Corvidor`;
-    }
-    
     const response = await deleteFileAsync(`data/${name}.crvdr`)
         .then(() => `${name} has been deleted from Corvidor`);
+        
     return response;
 }
 
 module.exports = {
+    createFile,
     compressData,
     combineData,
     bufferData,
@@ -100,7 +95,7 @@ module.exports = {
     splitData,
     decompressData,
     createFileName,
-    createFile,
+    fileExists,
     readFile,
     deleteFile
 };
