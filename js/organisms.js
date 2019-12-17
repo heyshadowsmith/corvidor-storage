@@ -1,43 +1,55 @@
 const atom = require("./atoms");
 const molecule = require("./molecules");
 
-function writeCorvidorFile(data, secret) {
+async function writeCorvidorFile(data, secret) {
     const name = atom.createFileName();
 
-    atom.createFile(name, molecule.convertData(data, secret));
+    const response = await atom.createFile(name, molecule.convertData(data, secret));
 
     return {
-        id: name,
+        "message": response,
+        "id": name,
         secret
     }
 }
 
-function readCorvidorFile(name, secret) {
-    const secretsMatch = molecule.secretsMatch(atom.readFile(name), secret);
+async function readCorvidorFile(name, secret) {
+    const fileData = await atom.readFile(name);
+
+    const secretsMatch = await molecule.secretsMatch(fileData, secret);
 
     if (!secretsMatch) return "Permission denied";
-    
-    return molecule.revertData(atom.readFile(name), secret);
+
+    const data = await molecule.revertData(fileData, secret)
+
+    return data;
 }
 
-function updateCorvidorFile(name, data, secret) {
-    const secretsMatch = molecule.secretsMatch(atom.readFile(name), secret);
+async function updateCorvidorFile(name, data, secret) {
+    const fileData = await atom.readFile(name);
+
+    const secretsMatch = await molecule.secretsMatch(fileData, secret);
 
     if (!secretsMatch) return "Permission denied";
 
     atom.createFile(name, molecule.convertData(data, secret));
 
-    return "Data has been updated";
+    return {
+        "message": `${name} has been updated`
+    };
 }
 
-function deleteCorvidorFile(name, secret) {
-    const secretsMatch = molecule.secretsMatch(atom.readFile(name), secret);
+async function deleteCorvidorFile(name, secret) {
+    const fileData = await atom.readFile(name)
+    const secretsMatch = await molecule.secretsMatch(fileData, secret);
 
     if (!secretsMatch) return "Permission denied";
 
-    atom.deleteFile(name);
+    const response = await atom.deleteFile(name);
 
-    return "Data has been deleted";
+    return {
+        "message": response
+    };
 }
 
 module.exports = {

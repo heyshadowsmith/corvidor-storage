@@ -1,6 +1,11 @@
 const fs = require("fs");
+const util = require("util");
 const lzma = require("lzma");
 const shortid = require("shortid");
+
+const readFileAsync = util.promisify(fs.readFile);
+const deleteFileAsync = util.promisify(fs.unlink);
+const writeFileAsync = util.promisify(fs.writeFile);
 
 function compressData(data) {
     return lzma.compress(JSON.stringify(data));
@@ -50,20 +55,31 @@ function createFileName() {
     return shortid.generate();
 }
 
-function createFile(name, data) {
-    fs.writeFileSync(`data/${name}.crvdr`, data);
+async function createFile(name, data) {
+    const response = await writeFileAsync(`data/${name}.crvdr`, data)
+        .then(() => `${name} has been added to Corvidor`)
+        .catch(error => {
+            throw new Error(error);
+        });
+    return response;
 }
 
-function readFile(name) {
-    return fs.readFileSync(`data/${name}.crvdr`, "utf8");
+async function readFile(name) {
+    const fileData = await readFileAsync(`data/${name}.crvdr`, "utf8")
+        .then(data => data)
+        .catch(error => {
+            throw new Error(error);
+        });
+    return fileData;
 }
 
-function deleteFile(name) {
-    fs.unlink(`data/${name}.crvdr`, error => {
-        if (error) {
-            return `${name} is not in Corvidor`;
-        }
-    });
+async function deleteFile(name) {
+    const response = await deleteFileAsync(`data/${name}.crvdr`)
+        .then(() => `${name} has been deleted from Corvidor`)
+        .catch(error => {
+            throw new Error(error);
+        });
+    return response;
 }
 
 module.exports = {

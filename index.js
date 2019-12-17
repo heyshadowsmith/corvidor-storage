@@ -16,36 +16,44 @@ app.use(
 );
 
 // CREATE
-app.post("/", (req, res) => {
+app.post("/", async (req, res) => {
   const data = req.body.data;
   const secret = uuid();
 
-  res.send(organism.writeCorvidorFile(data, secret));
+  const response = await organism.writeCorvidorFile(data, secret);
+
+  res.send(response);
 })
 
 // READ
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   const name = req.body.id;
   const secret = req.body.secret;
 
-  res.send(organism.readCorvidorFile(name, secret));
+  const data = await organism.readCorvidorFile(name, secret)
+
+  res.send(data);
 })
 
 // UPDATE
-app.put("/", (req, res) => {
+app.put("/", async (req, res) => {
   const name = req.body.id;
   const data = req.body.data;
   const secret = req.body.secret;
 
-  res.send(organism.updateCorvidorFile(name, data, secret));
+  const response = await organism.updateCorvidorFile(name, data, secret);
+
+  res.send(response);
 })
 
 // DESTROY
-app.delete("/", (req, res) => {
+app.delete("/", async (req, res) => {
   const name = req.body.id;
   const secret = req.body.secret;
 
-  res.send(organism.deleteCorvidorFile(name, secret));
+  const response = await organism.deleteCorvidorFile(name, secret)
+
+  res.send(response);
 })
 
 const PORT = process.env.PORT || 7000;
