@@ -1,22 +1,23 @@
 const fs = require("fs");
 const lzma = require("lzma");
 const shortid = require("shortid");
-const bcrypt = require("bcryptjs");
 
 function compressData(data) {
     return lzma.compress(JSON.stringify(data));
 }
 
-function decompressData(data) {
-    return JSON.parse(lzma.decompress(data));
+function combineData(array1, array2) {
+    const firstArrayPart = array1.slice(0, 13);
+    const secondArrayPart = array2;
+    secondArrayPart[0] = 0;
+    const lastArrayPart = array1.slice(13);
+    const ArrayStructure = [firstArrayPart, secondArrayPart, lastArrayPart];
+    const newArray = [].concat.apply([], ArrayStructure);
+    return newArray;
 }
 
 function bufferData(data) {
     return Buffer.from(data);
-}
-
-function debufferData(data) {
-    return data.toJSON().data;
 }
 
 function encodeData(data) {
@@ -27,12 +28,22 @@ function decodeData(data) {
     return Buffer.from(data, "base64");
 }
 
-function encryptData(data) {
-    return bcrypt.hashSync(data, 10);
+function debufferData(data) {
+    return data.toJSON().data;
 }
 
-function compareEncryptedData(data, encryptedData) {
-    return bcrypt.compareSync(data, encryptedData);
+function splitData(array1, array2) {
+    const firstArrayPart = array1.slice(0, 13);
+    const secondArrayPart = array1.slice(13, 13 + array2.length);
+    secondArrayPart[0] = 93;
+    const lastArrayPart = array1.slice(array2.length + 13);
+    const originalArray = firstArrayPart.concat(lastArrayPart);
+    const originalArrays = [originalArray, secondArrayPart];
+    return originalArrays;
+}
+
+function decompressData(data) {
+    return JSON.parse(lzma.decompress(data));
 }
 
 function createFileName() {
@@ -55,39 +66,17 @@ function deleteFile(name) {
     });
 }
 
-function combineArrays(array1, array2) {
-    const firstArrayPart = array1.slice(0, 13);
-    const secondArrayPart = array2;
-    secondArrayPart[0] = 0;
-    const lastArrayPart = array1.slice(13);
-    const ArrayStructure = [firstArrayPart, secondArrayPart, lastArrayPart];
-    const newArray = [].concat.apply([], ArrayStructure);
-    return newArray;
-}
-
-function getOriginalArrays(array1, array2) {
-    const firstArrayPart = array1.slice(0, 13);
-    const secondArrayPart = array1.slice(13, 13 + array2.length);
-    secondArrayPart[0] = 93;
-    const lastArrayPart = array1.slice(array2.length + 13);
-    const originalArray = firstArrayPart.concat(lastArrayPart);
-    const originalArrays = [originalArray, secondArrayPart];
-    return originalArrays;
-}
-
 module.exports = {
     compressData,
-    decompressData,
+    combineData,
     bufferData,
-    debufferData,
     encodeData,
     decodeData,
-    encryptData,
-    compareEncryptedData,
+    debufferData,
+    splitData,
+    decompressData,
     createFileName,
     createFile,
     readFile,
-    deleteFile,
-    combineArrays,
-    getOriginalArrays
+    deleteFile
 };
